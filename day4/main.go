@@ -45,16 +45,7 @@ func part2(firstRange string, secondRange string) bool {
 	return isOverlaped(firstRange, secondRange, _isOverlaped2)
 }
 
-func main() {
-	file, err := os.Open("input.txt")
-
-	if err != nil {
-		file = os.Stdin
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
+func run(scanner *bufio.Scanner) (int, int) {
 	totalFullOverlaped := 0
 	totalOverlaped := 0
 	for scanner.Scan() {
@@ -69,6 +60,20 @@ func main() {
 			totalOverlaped++
 		}
 	}
+    return totalFullOverlaped, totalOverlaped
+}
+
+func main() {
+	file, err := os.Open("input.txt")
+
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+    totalFullOverlaped, totalOverlaped := run(scanner)
+
 	fmt.Println("full: ", totalFullOverlaped)
 	fmt.Println("partial: ", totalOverlaped)
 
