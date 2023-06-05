@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"os"
 	"strings"
 )
 
@@ -54,13 +52,11 @@ func getNeededSelection(oponent GameOptions, howShouldEnd HowShouldEnd) GameOpti
 			}
 		}
 	}
-    // drwaing is the same selection
+	// drwaing is the same selection
 	return oponent
 }
 
-func Day2_2() {
-	scanner := bufio.NewScanner(os.Stdin)
-
+func Day2_2(scanner *bufio.Scanner) int {
 	score := 0
 	for scanner.Scan() {
 		text := scanner.Text()
@@ -72,5 +68,5 @@ func Day2_2() {
 		score += int(status) + int(mine)
 
 	}
-	fmt.Println(score)
+	return score
 }

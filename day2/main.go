@@ -74,9 +74,7 @@ func getStatus(opSelection GameOptions, mySelection GameOptions) Status {
 	return Draw 
 }
 
-func day2() {
-	scanner := bufio.NewScanner(os.Stdin)
-
+func day2(scanner *bufio.Scanner) int {
 	score := 0
 	for scanner.Scan() {
 		text := scanner.Text()
@@ -86,11 +84,27 @@ func day2() {
 		status := getStatus(oponent, mine)
 		score += int(status) + int(mine)
 	}
-	fmt.Println(score)
+	return score
 }
 
 func main() {
-    // day2()
-    Day2_2() 
-}
+	file, err := os.Open("input.txt")
 
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	part1 := day2(scanner)
+	file, err = os.Open("input.txt")
+
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+	scanner = bufio.NewScanner(file)
+	part2 := Day2_2(scanner)
+	fmt.Println("part1: ", part1)
+	fmt.Println("part2: ", part2)
+}
