@@ -12,12 +12,12 @@ import (
 
 func main () {
     scanner := bufio.NewScanner(os.Stdin)
-    elfsCalories := []int{0}
+    elvesCalories := []int{0}
     i := 0
     for scanner.Scan() {
         text := scanner.Text()
         if strings.TrimSpace(text) == "" {
-            elfsCalories = append(elfsCalories, 0)
+            elvesCalories = append(elvesCalories, 0)
             i++
             continue
         }
@@ -26,13 +26,13 @@ func main () {
             fmt.Println("error converting to int")
         }
 
-        elfsCalories[i] += calories
+        elvesCalories[i] += calories
     }
-    sort.Ints(elfsCalories)
+    sort.Ints(elvesCalories)
     
     topn := 3
     sum := 0
-    for _, value := range elfsCalories[len(elfsCalories) - topn:] {
+    for _, value := range elvesCalories[len(elvesCalories) - topn:] {
         sum += value
     }
 

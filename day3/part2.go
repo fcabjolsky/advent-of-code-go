@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-func getCommonElementForGroup(elfsRucksacks []string) rune {
-	for _, element := range elfsRucksacks[0] {
+func getCommonElementForGroup(elvesRucksacks []string) rune {
+	for _, element := range elvesRucksacks[0] {
 		found := true
-		for _, e := range elfsRucksacks[1:] {
+		for _, e := range elvesRucksacks[1:] {
 			if !strings.ContainsRune(e, element) {
 				found = false
 				break
@@ -25,18 +25,18 @@ func getCommonElementForGroup(elfsRucksacks []string) rune {
 
 func Part2() {
 	scanner := bufio.NewScanner(os.Stdin)
-	elfGroups := []string{}
+	elvesGroups := []string{}
 	i := 0
 	score := 0
     nGroup := 3
 	for scanner.Scan() {
 		line := scanner.Text()
-		elfGroups = append(elfGroups, line)
+		elvesGroups = append(elvesGroups, line)
 		i++
 		if i == nGroup {
-			element := getCommonElementForGroup(elfGroups)
+			element := getCommonElementForGroup(elvesGroups)
 			score += getPointsForElement(element)
-			elfGroups = []string{}
+			elvesGroups = []string{}
 			i = 0
 		}
 
