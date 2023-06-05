@@ -9,9 +9,15 @@ import (
 	"strings"
 )
 
+func part1() int {
+	file, err := os.Open("input.txt")
 
-func main () {
-    scanner := bufio.NewScanner(os.Stdin)
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
     elvesCalories := []int{0}
     i := 0
     for scanner.Scan() {
@@ -35,7 +41,9 @@ func main () {
     for _, value := range elvesCalories[len(elvesCalories) - topn:] {
         sum += value
     }
+    return sum
+}
 
-
-    fmt.Println("max::", sum)
+func main () {
+    fmt.Println("max::", part1())
 }
