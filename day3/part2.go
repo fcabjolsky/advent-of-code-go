@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"os"
 	"strings"
 )
 
@@ -23,8 +21,7 @@ func getCommonElementForGroup(elvesRucksacks []string) rune {
 	return ' '
 }
 
-func Part2() {
-	scanner := bufio.NewScanner(os.Stdin)
+func Part2(scanner *bufio.Scanner) int {
 	elvesGroups := []string{}
 	i := 0
 	score := 0
@@ -41,6 +38,5 @@ func Part2() {
 		}
 
 	}
-	fmt.Println(score)
-
+    return score
 }

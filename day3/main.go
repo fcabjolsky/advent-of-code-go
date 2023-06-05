@@ -22,8 +22,7 @@ func getPointsForElement(element rune) int {
 	}
 	return (int(element) - 64) + 26
 }
-func part1() {
-	scanner := bufio.NewScanner(os.Stdin)
+func part1(scanner *bufio.Scanner) int {
 	score := 0
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -33,9 +32,30 @@ func part1() {
 		element := getMatch(firstHalf, secondHalf)
 		score += getPointsForElement(element)
 	}
-	fmt.Println(score)
+    return score
 }
 
 func main() {
-    Part2()
+	file, err := os.Open("input.txt")
+
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+    part1 := part1(scanner)
+
+	file, err = os.Open("input.txt")
+
+	if err != nil {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	scanner = bufio.NewScanner(file)
+    part2 := Part2(scanner)
+    fmt.Println("part 1", part1)
+    fmt.Println("part 2", part2)
 }
+
