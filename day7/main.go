@@ -15,21 +15,22 @@ func main() {
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	part1 := part1(scanner)
+    nodes := processInput(scanner)
+	part1 := part1(nodes)
+	part2 := part2(nodes)
 	fmt.Println(part1)
+	fmt.Println(part2)
 
 }
 
 type Node struct {
 	Parent *Node
-	Childs []*Node
 	Path   string
 	Size   int
 }
 
 func NewNode(path string) *Node {
 	return &Node{
-		Childs: make([]*Node, 0),
 		Path:   path,
 		Size:   0,
 	}
@@ -38,10 +39,6 @@ func NewNode(path string) *Node {
 func (n *Node) setParent(parent *Node) {
 	n.Parent = parent
 }
-
-// func (n *Node) addChild(child *Node) {
-// 	n.Childs = append(n.Childs, child)
-// }
 
 func (n *Node) addSize(size int) {
 	n.Size += size
@@ -66,7 +63,7 @@ func processCommand(currentNode *Node, command string, nodes *[]*Node) *Node {
 	return currentNode
 }
 
-func part1(scanner *bufio.Scanner) int {
+func processInput(scanner *bufio.Scanner) []*Node {
 	nodes := []*Node{}
 	var currentNode *Node
 	for scanner.Scan() {
@@ -86,7 +83,10 @@ func part1(scanner *bufio.Scanner) int {
 		currentNode.Parent.addSize(currentNode.Size)
 		currentNode = currentNode.Parent
 	}
+    return nodes;
+}
 
+func part1(nodes []*Node) int {
 	var sum int = 0
 	for _, v := range nodes {
 		if v.Size <= 100000 {
@@ -95,3 +95,18 @@ func part1(scanner *bufio.Scanner) int {
 	}
 	return sum
 }
+
+func part2(nodes []*Node) int {
+    available := 70000000
+    needed := 30000000
+    total := nodes[0].Size
+    toFree := needed - (available - total)
+    min := available
+    for _, v := range nodes {
+        if v.Size > toFree && v.Size < min {
+            min = v.Size
+        }
+    }
+    return min 
+}
+
