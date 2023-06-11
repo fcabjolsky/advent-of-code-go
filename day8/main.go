@@ -15,10 +15,36 @@ func main() {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	inputMap := processInput(scanner)
-	part1 := part1(inputMap)
-	fmt.Println(part1)
+	part1, part2 := part1And2(inputMap)
+	fmt.Println(part1, part2)
 
 }
+
+func reverseCheck(input *[][]int, start, curr, extra int, check func(*[][]int, int, int) int) (bool, int) {
+    tot := 0
+	for i := start - 1; i >= 0; i-- {
+		tot++
+		if check(input, i, extra) >= curr {
+			return false, tot
+		}
+
+	}
+	return true, tot
+}
+
+func normalCheck(input *[][]int, start, curr, extra int, check func(*[][]int, int, int) int) (bool, int) {
+    tot := 0
+	for i := start + 1; i < len(*input); i++ {
+		tot++
+		if check(input, i, extra) >= curr {
+			return false, tot
+		}
+
+	}
+	return true, tot
+}
+
+
 
 func processInput(scanner *bufio.Scanner) [][]int {
 	inputMap := [][]int{}
@@ -34,36 +60,30 @@ func processInput(scanner *bufio.Scanner) [][]int {
 	return inputMap
 }
 
-func checkRow(inputMap *[][]int, start, end, col, curr int) bool {
-	for i := start; i < end; i++ {
-		if (*inputMap)[col][i] >= curr {
-			return false
-		}
-	}
-	return true
-}
-func checkCol(inputMap *[][]int, start, end, row, curr int) bool {
-	for i := start; i < end; i++ {
-		if (*inputMap)[i][row] >= curr {
-			return false
-		}
-	}
-	return true
-}
 
-func part1(inputMap [][]int) int {
+func part1And2(inputMap [][]int) (int, int) {
 	total := ((len(inputMap) * 2) + (len(inputMap[0]) * 2)) - 4
+	max := 0
+    checkInRow := func (input *[][]int, row int, col int) int { return (*input)[col][row]}
+    checkInCol := func (input *[][]int, col int, row int) int { return (*input)[col][row]}
+
 	for i := 1; i < len(inputMap)-1; i++ {
 		for j := 1; j < len(inputMap[i])-1; j++ {
-			visibleT := checkCol(&inputMap, 0, i, j, inputMap[i][j]) 
-			visibleB := checkCol(&inputMap, i + 1, len(inputMap), j, inputMap[i][j]) 
-			visibleR := checkRow(&inputMap, j + 1, len(inputMap), i, inputMap[i][j]) 
-			visibleL := checkRow(&inputMap, 0, j, i, inputMap[i][j]) 
+            
+            visibleT, currT := reverseCheck(&inputMap, i, inputMap[i][j], j, checkInCol) 
+            visibleB, currB := normalCheck(&inputMap, i, inputMap[i][j], j, checkInCol) 
+			visibleR, currR := normalCheck(&inputMap, j, inputMap[i][j], i, checkInRow)
+			visibleL, currL := reverseCheck(&inputMap, j, inputMap[i][j], i, checkInRow) 
 			if visibleT || visibleB || visibleL || visibleR {
+				tot := currB * currT * currR * currL
+				if tot > max {
+					max = tot
+				}
 				total++
 			}
+
 		}
 
 	}
-	return total
+	return total, max
 }
