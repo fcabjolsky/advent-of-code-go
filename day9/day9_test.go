@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPart1Day8(t *testing.T) {
+func TestPart1Day9(t *testing.T) {
 	file, err := os.Open("input.txt")
 
 	if err != nil {
@@ -20,7 +20,7 @@ func TestPart1Day8(t *testing.T) {
 	assert.Equal(t, 6181, result)
 }
 
-func TestPart2Day8(t *testing.T) {
+func TestPart2Day9(t *testing.T) {
 	file, err := os.Open("input.txt")
 
 	if err != nil {
