@@ -20,6 +20,7 @@ type Cpu struct {
 	currentOperationCycle int
 	singalStrengths       map[int]int
 	op                    string
+	Crt                   int
 }
 
 func NewCpu() *Cpu {
@@ -38,11 +39,28 @@ func (cpu *Cpu) StoreSignalStrength() {
 	}
 
 }
+func (cpu *Cpu) Print() {
+    low := cpu.X - 1
+    high := cpu.X + 1
+    if cpu.Crt >= low && cpu.Crt <= high {
+        fmt.Print("#")
+
+    } else {
+        fmt.Print(".")
+    }
+    cpu.Crt++
+	if cpu.Crt == 40{
+        fmt.Println()
+        cpu.Crt = 0
+	}
+
+}
 
 func (cpu *Cpu) Next() {
 	cpu.currentOperationCycle++
-    cpu.Cycle++
+	cpu.Cycle++
 	cpu.StoreSignalStrength()
+    cpu.Print()
 	if cpu.currentOperationCycle == 2 {
 		cpu.currentOperationCycle = 0
 		cpu.X += cpu.currentOperationValue
@@ -54,9 +72,9 @@ func (cpu *Cpu) Next() {
 		v, _ := strconv.Atoi(splitted[1])
 		cpu.currentOperationValue = v
 		cpu.Next()
-	} else { 
-        cpu.currentOperationCycle = 0
-    }
+	} else {
+		cpu.currentOperationCycle = 0
+	}
 
 }
 
@@ -67,21 +85,21 @@ func main() {
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-    result := run(scanner)
-    fmt.Println("Part 1:", result)
+	result := run(scanner)
+	fmt.Println("Part 1:", result)
 
 }
 
 func run(scanner *bufio.Scanner) int {
-    cpu := NewCpu()
+	cpu := NewCpu()
 	for scanner.Scan() {
 		line := scanner.Text()
-        cpu.op = line
-        cpu.Next()
+		cpu.op = line
+		cpu.Next()
 	}
-    sum := 0
-    for _, v := range cpu.singalStrengths {
-        sum += v
-    }
-    return sum
+	sum := 0
+	for _, v := range cpu.singalStrengths {
+		sum += v
+	}
+	return sum
 }
